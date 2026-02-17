@@ -61,6 +61,11 @@ public:
     static EvalResult getBestHand(const std::vector<Card>& hand, const std::vector<Card>& community);
     static int judge(const std::vector<Card>& playerA, const std::vector<Card>& playerB, const std::vector<Card>& community);
     
+    // 將 EvalResult 編碼為單一可比較整數 (數值越大牌力越強)
+    static long long evalToScore(const EvalResult& res);
+    // 輸入 7 張牌 (2 手牌 + 5 公共牌)，回傳牌力分數
+    static long long evaluateSeven(const std::vector<Card>& sevenCards);
+    
     static std::string handRankToString(HandRank rank);
     static Card parseCard(const std::string& str);
     static std::string cardToString(const Card& card);

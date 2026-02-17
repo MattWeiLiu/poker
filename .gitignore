@@ -3,3 +3,4 @@ evaluator/poker_checker
 __pycache__/
 *.pyc
 .DS_Store
+*.csv

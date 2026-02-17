@@ -102,6 +102,30 @@ int PokerEvaluator::judge(const std::vector<Card>& playerA, const std::vector<Ca
     return 0;
 }
 
+long long PokerEvaluator::evalToScore(const EvalResult& res) {
+    // 將 HandRank 與 kicker values 編碼為單一整數
+    // HandRank 佔最高位，後面依序放入 values（最多 5 個）
+    // 每個 value 佔 4 bits (0-14)，HandRank 佔 4 bits (1-10)
+    // 總共：4 + 5*4 = 24 bits，long long 綽綽有餘
+    long long score = static_cast<long long>(res.handRank);
+    for (size_t i = 0; i < res.values.size() && i < 5; ++i) {
+        score = score * 15 + res.values[i];
+    }
+    // 補齊到固定長度（5 個 value 位置），確保不同長度的 values 仍可正確比較
+    for (size_t i = res.values.size(); i < 5; ++i) {
+        score = score * 15;
+    }
+    return score;
+}
+
+long long PokerEvaluator::evaluateSeven(const std::vector<Card>& sevenCards) {
+    // 前 2 張為手牌，後 5 張為公共牌
+    std::vector<Card> hand(sevenCards.begin(), sevenCards.begin() + 2);
+    std::vector<Card> community(sevenCards.begin() + 2, sevenCards.end());
+    EvalResult res = getBestHand(hand, community);
+    return evalToScore(res);
+}
+
 std::string PokerEvaluator::handRankToString(HandRank rank) {
     switch (rank) {
         case HandRank::HighCard: return "High Card";

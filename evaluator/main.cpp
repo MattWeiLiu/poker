@@ -35,6 +35,29 @@ int main(int argc, char* argv[]) {
             continue;
         }
 
+        // 新增 EVAL 命令：輸入 7 張牌，回傳牌力分數
+        // 格式: EVAL AS KS 2D QS 7C 9S JS
+        if (line.substr(0, 4) == "EVAL") {
+            std::string cardsStr = line.substr(5); // 跳過 "EVAL "
+            std::vector<Card> cards = stringToCards(cardsStr);
+            if (cards.size() != 7) {
+                if (!machineMode) std::cout << "Error: EVAL requires exactly 7 cards." << std::endl;
+                else std::cout << "ERROR_EVAL_CARDS" << std::endl;
+            } else {
+                long long score = PokerEvaluator::evaluateSeven(cards);
+                EvalResult res = PokerEvaluator::getBestHand(
+                    std::vector<Card>(cards.begin(), cards.begin() + 2),
+                    std::vector<Card>(cards.begin() + 2, cards.end())
+                );
+                std::cout << "RANK: " << score << std::endl;
+                std::cout << "HAND: " << PokerEvaluator::handRankToString(res.handRank) << std::endl;
+                std::cout << std::endl;
+            }
+            if (!machineMode) std::cout << "> ";
+            continue;
+        }
+
+        // 原有的 judge 格式: "AS KS | QH QD | 2D 5S 7C 8D JH"
         std::stringstream ss(line);
         std::string part;
         std::vector<std::string> parts;
@@ -67,9 +90,9 @@ int main(int argc, char* argv[]) {
         std::cout << "B's Best: " << PokerEvaluator::handRankToString(resB.handRank) << std::endl;
 
         int result = PokerEvaluator::judge(pA, pB, comm);
-        if (result == 1) std::cout << "Result: PLAYER A WINS!" << std::endl;
-        else if (result == -1) std::cout << "Result: PLAYER B WINS!" << std::endl;
-        else std::cout << "Result: TIE!" << std::endl;
+        if (result == 1) std::cout << "Result: A" << std::endl;
+        else if (result == -1) std::cout << "Result: B" << std::endl;
+        else std::cout << "Result: TIE" << std::endl;
         std::cout << std::endl;
         
         if (!machineMode) std::cout << "> ";

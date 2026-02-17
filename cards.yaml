@@ -1,105 +1,208 @@
-cards:
-  - suit: Spades
-    rank: A
-  - suit: Spades
-    rank: '2'
-  - suit: Spades
-    rank: '3'
-  - suit: Spades
-    rank: '4'
-  - suit: Spades
-    rank: '5'
-  - suit: Spades
-    rank: '6'
-  - suit: Spades
-    rank: '7'
-  - suit: Spades
-    rank: '8'
-  - suit: Spades
-    rank: '9'
-  - suit: Spades
-    rank: '10'
-  - suit: Spades
-    rank: J
-  - suit: Spades
-    rank: Q
-  - suit: Spades
-    rank: K
-  - suit: Hearts
-    rank: A
-  - suit: Hearts
-    rank: '2'
-  - suit: Hearts
-    rank: '3'
-  - suit: Hearts
-    rank: '4'
-  - suit: Hearts
-    rank: '5'
-  - suit: Hearts
-    rank: '6'
-  - suit: Hearts
-    rank: '7'
-  - suit: Hearts
-    rank: '8'
-  - suit: Hearts
-    rank: '9'
-  - suit: Hearts
-    rank: '10'
-  - suit: Hearts
-    rank: J
-  - suit: Hearts
-    rank: Q
-  - suit: Hearts
-    rank: K
-  - suit: Diamonds
-    rank: A
-  - suit: Diamonds
-    rank: '2'
-  - suit: Diamonds
-    rank: '3'
-  - suit: Diamonds
-    rank: '4'
-  - suit: Diamonds
-    rank: '5'
-  - suit: Diamonds
-    rank: '6'
-  - suit: Diamonds
-    rank: '7'
-  - suit: Diamonds
-    rank: '8'
-  - suit: Diamonds
-    rank: '9'
-  - suit: Diamonds
-    rank: '10'
-  - suit: Diamonds
-    rank: J
-  - suit: Diamonds
-    rank: Q
-  - suit: Diamonds
-    rank: K
-  - suit: Clubs
-    rank: A
-  - suit: Clubs
-    rank: '2'
-  - suit: Clubs
-    rank: '3'
-  - suit: Clubs
-    rank: '4'
-  - suit: Clubs
-    rank: '5'
-  - suit: Clubs
-    rank: '6'
-  - suit: Clubs
-    rank: '7'
-  - suit: Clubs
-    rank: '8'
-  - suit: Clubs
-    rank: '9'
-  - suit: Clubs
-    rank: '10'
-  - suit: Clubs
-    rank: J
-  - suit: Clubs
-    rank: Q
-  - suit: Clubs
-    rank: K
+0:
+  rank: A
+  suit: Spades
+  symbol: AS
+1:
+  rank: '2'
+  suit: Spades
+  symbol: 2S
+2:
+  rank: '3'
+  suit: Spades
+  symbol: 3S
+3:
+  rank: '4'
+  suit: Spades
+  symbol: 4S
+4:
+  rank: '5'
+  suit: Spades
+  symbol: 5S
+5:
+  rank: '6'
+  suit: Spades
+  symbol: 6S
+6:
+  rank: '7'
+  suit: Spades
+  symbol: 7S
+7:
+  rank: '8'
+  suit: Spades
+  symbol: 8S
+8:
+  rank: '9'
+  suit: Spades
+  symbol: 9S
+9:
+  rank: '10'
+  suit: Spades
+  symbol: 10S
+10:
+  rank: J
+  suit: Spades
+  symbol: JS
+11:
+  rank: Q
+  suit: Spades
+  symbol: QS
+12:
+  rank: K
+  suit: Spades
+  symbol: KS
+13:
+  rank: A
+  suit: Hearts
+  symbol: AH
+14:
+  rank: '2'
+  suit: Hearts
+  symbol: 2H
+15:
+  rank: '3'
+  suit: Hearts
+  symbol: 3H
+16:
+  rank: '4'
+  suit: Hearts
+  symbol: 4H
+17:
+  rank: '5'
+  suit: Hearts
+  symbol: 5H
+18:
+  rank: '6'
+  suit: Hearts
+  symbol: 6H
+19:
+  rank: '7'
+  suit: Hearts
+  symbol: 7H
+20:
+  rank: '8'
+  suit: Hearts
+  symbol: 8H
+21:
+  rank: '9'
+  suit: Hearts
+  symbol: 9H
+22:
+  rank: '10'
+  suit: Hearts
+  symbol: 10H
+23:
+  rank: J
+  suit: Hearts
+  symbol: JH
+24:
+  rank: Q
+  suit: Hearts
+  symbol: QH
+25:
+  rank: K
+  suit: Hearts
+  symbol: KH
+26:
+  rank: A
+  suit: Diamonds
+  symbol: AD
+27:
+  rank: '2'
+  suit: Diamonds
+  symbol: 2D
+28:
+  rank: '3'
+  suit: Diamonds
+  symbol: 3D
+29:
+  rank: '4'
+  suit: Diamonds
+  symbol: 4D
+30:
+  rank: '5'
+  suit: Diamonds
+  symbol: 5D
+31:
+  rank: '6'
+  suit: Diamonds
+  symbol: 6D
+32:
+  rank: '7'
+  suit: Diamonds
+  symbol: 7D
+33:
+  rank: '8'
+  suit: Diamonds
+  symbol: 8D
+34:
+  rank: '9'
+  suit: Diamonds
+  symbol: 9D
+35:
+  rank: '10'
+  suit: Diamonds
+  symbol: 10D
+36:
+  rank: J
+  suit: Diamonds
+  symbol: JD
+37:
+  rank: Q
+  suit: Diamonds
+  symbol: QD
+38:
+  rank: K
+  suit: Diamonds
+  symbol: KD
+39:
+  rank: A
+  suit: Clubs
+  symbol: AC
+40:
+  rank: '2'
+  suit: Clubs
+  symbol: 2C
+41:
+  rank: '3'
+  suit: Clubs
+  symbol: 3C
+42:
+  rank: '4'
+  suit: Clubs
+  symbol: 4C
+43:
+  rank: '5'
+  suit: Clubs
+  symbol: 5C
+44:
+  rank: '6'
+  suit: Clubs
+  symbol: 6C
+45:
+  rank: '7'
+  suit: Clubs
+  symbol: 7C
+46:
+  rank: '8'
+  suit: Clubs
+  symbol: 8C
+47:
+  rank: '9'
+  suit: Clubs
+  symbol: 9C
+48:
+  rank: '10'
+  suit: Clubs
+  symbol: 10C
+49:
+  rank: J
+  suit: Clubs
+  symbol: JC
+50:
+  rank: Q
+  suit: Clubs
+  symbol: QC
+51:
+  rank: K
+  suit: Clubs
+  symbol: KC

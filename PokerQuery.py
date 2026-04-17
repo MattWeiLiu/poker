@@ -14,46 +14,79 @@ class PokerQuery:
 
     def _normalize_hand(self, hand):
         """
-        將任意兩張手牌正規化為 169 手代表牌符號
-        邏輯：
-        1. 獲取兩張牌的 rank_idx (0-12) 和 suit_idx (0-3)
-        2. 判斷是 Pair, Suited, 還是 Offsuit
-        3. 根據 PokerFullSpectrum.py 的生成邏輯映射回代表符號
+        將任意兩張手牌正規化為 169 手代表牌符號，並回傳對應的花色映射表。
         """
         ids = [self.symbol_to_id[s] for s in hand]
-        # rank_idx = idx % 13; suit_idx = idx // 13
-        r1, s1 = ids[0] % 13, ids[0] // 13
-        r2, s2 = ids[1] % 13, ids[1] // 13
+        cards = [(i % 13, i // 13) for i in ids]
+        
+        # 確保 r1 總是較小的 rank
+        cards.sort(key=lambda x: x[0])
+        r1, s1 = cards[0]
+        r2, s2 = cards[1]
 
-        # 排序 rank，讓 rmin 永遠是點數較小的索引 (A=0, 2=1...)
-        # 注意：在我的 cards.yaml 中，0 是 A，1 是 2... 12 是 K
-        ranks = sorted([r1, r2])
-        r_min, r_max = ranks[0], ranks[1]
+        suit_mapping = {}
+        avail_target_suits = [0, 1, 2, 3]
+        avail_src_suits = [0, 1, 2, 3]
 
         if r1 == r2:
-            # Pair -> 代表牌是 [rank]S, [rank]H (idx: r, r+13)
-            # 例如 AA -> AS, AH
-            sym1 = self.cards_config[r_min]["symbol"]
-            sym2 = self.cards_config[r_min + 13]["symbol"]
+            sym1 = self.cards_config[r1]["symbol"]
+            sym2 = self.cards_config[r1 + 13]["symbol"]
+            norm_hand_syms = sorted([sym1, sym2])
+            
+            suit_mapping[s1] = 0
+            suit_mapping[s2] = 1
+            avail_target_suits.remove(0)
+            avail_target_suits.remove(1)
+            avail_src_suits.remove(s1)
+            avail_src_suits.remove(s2)
         elif s1 == s2:
-            # Suited -> 代表牌是 [r_min]S, [r_max]S (idx: r_min, r_max)
-            # 例如 AKs -> AS, KS
-            sym1 = self.cards_config[r_min]["symbol"]
-            sym2 = self.cards_config[r_max]["symbol"]
+            sym1 = self.cards_config[r1]["symbol"]
+            sym2 = self.cards_config[r2]["symbol"]
+            norm_hand_syms = sorted([sym1, sym2])
+            
+            suit_mapping[s1] = 0
+            avail_target_suits.remove(0)
+            avail_src_suits.remove(s1)
         else:
-            # Offsuit -> 代表牌是 [r_min]S, [r_max]H (idx: r_min, r_max+13)
-            # 例如 AKo -> AS, KH
-            sym1 = self.cards_config[r_min]["symbol"]
-            sym2 = self.cards_config[r_max + 13]["symbol"]
+            sym1 = self.cards_config[r1]["symbol"]
+            sym2 = self.cards_config[r2 + 13]["symbol"]
+            norm_hand_syms = sorted([sym1, sym2])
+            
+            suit_mapping[s1] = 0
+            suit_mapping[s2] = 1
+            avail_target_suits.remove(0)
+            avail_target_suits.remove(1)
+            avail_src_suits.remove(s1)
+            avail_src_suits.remove(s2)
+            
+        for src_s, tgt_s in zip(avail_src_suits, avail_target_suits):
+            suit_mapping[src_s] = tgt_s
 
-        return sorted([sym1, sym2])
+        return norm_hand_syms, suit_mapping
+
+    def _normalize_board(self, board, suit_mapping):
+        """
+        根據手牌正規化時產生的花色映射表，將公共牌也進行等價映射。
+        """
+        if not board:
+            return []
+        norm_board = []
+        for b_sym in board:
+            b_id = self.symbol_to_id[b_sym]
+            b_r = b_id % 13
+            b_s = b_id // 13
+            
+            mapped_s = suit_mapping[b_s]
+            mapped_idx = mapped_s * 13 + b_r
+            norm_board.append(self.cards_config[mapped_idx]["symbol"])
+        return sorted(norm_board)
 
     def query(self, hand, board=None):
         """
         hand: ['AH', 'KD']
         board: ['2S', '3H', '4D'] (Flop) 或 ['2S', '3H', '4D', '5C'] (Turn)
         """
-        norm_hand_syms = self._normalize_hand(hand)
+        norm_hand_syms, suit_mapping = self._normalize_hand(hand)
         hand_name = "_".join(norm_hand_syms)
         file_path = os.path.join(self.results_dir, f"{hand_name}.csv")
 
@@ -76,8 +109,8 @@ class PokerQuery:
 
         # 查詢 Flop 或 Turn
         stage = "Flop" if len(board) == 3 else "Turn"
-        # 注意：CSV 中的 Board 是排序後的符號，逗號分隔
-        board_key = ",".join(sorted(board))
+        norm_board = self._normalize_board(board, suit_mapping)
+        board_key = ",".join(norm_board)
 
         with open(file_path, "r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
@@ -87,6 +120,7 @@ class PokerQuery:
                         "Hand": hand,
                         "Board": board,
                         "NormalizedTo": norm_hand_syms,
+                        "MappedBoard": norm_board,
                         "Stage": stage,
                         "Equity": float(row["Equity"]),
                         "TieProb": float(row["TieProb"]),

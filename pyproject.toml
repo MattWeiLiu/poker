@@ -1,0 +1,23 @@
+[tool.ruff]
+# Enable auto-fix behavior by default
+fix = true
+
+# Rule selection
+# E: Error codes (pycodestyle)
+# F: Pyflakes
+# I: Isort (imports)
+# W: Warnings (pycodestyle)
+select = ["E", "F", "I", "W"]
+
+# Ignore certain rules if needed
+ignore = []
+
+# Target Python version
+target-version = "py39"
+
+[tool.ruff.format]
+# Enable formatting
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
